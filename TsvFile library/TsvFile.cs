@@ -13,9 +13,9 @@ namespace TSVTools
 
         public int Count => _rows.Count;
 
-        public TsvFile(List<string> columnNames)
+        public TsvFile()
         {
-            ColumnNames = columnNames;
+            ColumnNames = typeof(T).GetProperties().Select(p => p.Name).ToList();
         }
 
         public TsvFile(string filePath)
