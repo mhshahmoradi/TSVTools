@@ -4,6 +4,32 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>TsvFile_library</RootNamespace>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>TSVTools</Title>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIcon>_44215e29-c371-426c-ab6e-fdf5d06e853c.jpg</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/mhshahmoradi/TSVTools</RepositoryUrl>
+    <PackAsTool>False</PackAsTool>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <AnalysisLevel>none</AnalysisLevel>
+    <Authors>MHReza</Authors>
+    <Description>TSVTools is a .NET library that provides easy and efficient handling of TSV (tab-separated values) files.</Description>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>TSV</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Downloads\_44215e29-c371-426c-ab6e-fdf5d06e853c.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
