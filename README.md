@@ -4,7 +4,7 @@ TSVTools is a lightweight library that makes it easy to read and write TSV (tab-
 ## Installation
 You can install TSVTools via NuGet using the following command:
 
-    dotnet add package TSVTools --version 1.0.0
+    Install-Package TSVTools
 
 ## Usage
 First you need write your input model:
@@ -36,6 +36,14 @@ Once you have added all your data to the `TsvFile` object, you can save the data
 
     tsvFile.SaveToFile("path.tsv");
 This will save the data to a TSV file at the specified path.
+
+you can read data like this:
+
+    foreach (var row in tsvFile)
+    {
+        Console.WriteLine($"Name: {row.Name} , age is : {row.Age} , Email is {row.Email}");
+    }
+
 ### Appending to a TSV file
 To append data from a TSV file to your data, you can use the `AppendFile` method:
 
