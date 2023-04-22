@@ -120,7 +120,34 @@ namespace TSVTools
                 writer.WriteLine(string.Join("\t", rowValues));
             }
         }
+        public void UpdateRow(int index, T row)
+        {
+            _rows[index] = row;
+        }
+        public T GetRow(int index)
+        {
+            return _rows[index];
+        }
+        public void ExportToCsv(string filePath)
+        {
+            using var writer = new StreamWriter(filePath);
 
+            writer.WriteLine(string.Join(",", ColumnNames));
+
+            foreach (var row in _rows)
+            {
+                var rowValues = new List<string>();
+
+                foreach (var columnName in ColumnNames)
+                {
+                    var property = typeof(T).GetProperty(columnName);
+                    var value = property.GetValue(row).ToString();
+                    rowValues.Add(value);
+                }
+
+                writer.WriteLine(string.Join(",", rowValues));
+            }
+        }
         public IEnumerator<T> GetEnumerator()
         {
             return _rows.GetEnumerator();
