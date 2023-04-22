@@ -4,7 +4,11 @@ TSVTools is a lightweight library that makes it easy to read and write TSV (tab-
 ## Installation
 You can install TSVTools via NuGet using the following command:
 
-    dotnet add package TSVTools --version 1.0.0
+    dotnet add package TSVTools --version 1.0.2
+or
+    NuGet\Install-Package TSVTools -Version 1.0.2
+
+Nuget package link: https://www.nuget.org/packages/TSVTools 
 
 ## Usage
 First you need write your input model:
