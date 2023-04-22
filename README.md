@@ -6,9 +6,8 @@ You can install TSVTools via NuGet using the following command:
 
     dotnet add package TSVTools --version 1.0.4
 or
-    NuGet\Install-Package TSVTools -Version 1.0.4
 
-Nuget package link: https://www.nuget.org/packages/TSVTools 
+    NuGet\Install-Package TSVTools -Version 1.0.4
 
 ## Usage
 First you need write your input model:
@@ -48,10 +47,22 @@ you can read data like this:
         Console.WriteLine($"Name: {row.Name} , age is : {row.Age} , Email is {row.Email}");
     }
 
-### Appending to a TSV file
+for updating a row you use UpdateRow method
+
+    tsvFile.UpdateRow(1, new  MyDataModel {Name = "", Age = 18, Email = ""});
+for  get row with index you can use GetRow method
+
+    tsvFile.GetRow(1);
+
+### Appending a TSV file tp your data
 To append data from a TSV file to your data, you can use the `AppendFile` method:
 
     tsvFile.AppendFile("path/to/my/existing/tsv/file.tsv");
+
+### Export to a csv file
+For export your data in csv file format you can use this method:
+
+    tsvFile.ExportToCsv("FilePath.csv");
 
 ## Contributing
 If you'd like to contribute to TSVTools, please submit a pull request or open an issue. We welcome all feedback and contributions!
