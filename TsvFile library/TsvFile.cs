@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace TSVTools
 {
-    public class TsvFile<T> where T : new()
+    public class TsvFile<T> : IEnumerable<T> where T : new()
     {
         private readonly List<T> _rows = new List<T>();
 
-        public List<string> ColumnNames { get; }
+        private List<string> ColumnNames { get; set; }
 
         public int Count => _rows.Count;
 
@@ -18,25 +18,31 @@ namespace TSVTools
             ColumnNames = typeof(T).GetProperties().Select(p => p.Name).ToList();
         }
 
-        public TsvFile(string filePath)
+        public TsvFile(string filePath) : this()
         {
-            if (!File.Exists(filePath))
+            if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new FileNotFoundException($"File '{filePath}' not found.");
+                throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
             }
 
-            var lines = File.ReadAllLines(filePath);
+            LoadFromFile(filePath);
+        }
 
-            if (lines.Length == 0)
+        private void LoadFromFile(string filePath)
+        {
+            using var reader = new StreamReader(filePath);
+
+            if (reader.EndOfStream)
             {
                 throw new ArgumentException($"File '{filePath}' is empty.");
             }
 
-            ColumnNames = new List<string>(lines[0].Split('\t'));
-
-            for (int i = 1; i < lines.Length; i++)
+            ColumnNames = new List<string>(reader.ReadLine().Split('\t'));
+            int i = 1;
+            while (!reader.EndOfStream)
             {
-                var rowValues = lines[i].Split('\t');
+                var line = reader.ReadLine();
+                var rowValues = line.Split('\t');
 
                 if (rowValues.Length != ColumnNames.Count)
                 {
@@ -50,7 +56,7 @@ namespace TSVTools
                 {
                     var property = typeof(T).GetProperty(ColumnNames[j]);
                     var value = rowValues[j];
-                    object typedValue = null;
+                    object typedValue;
 
                     if (property.PropertyType.IsEnum)
                     {
@@ -60,7 +66,6 @@ namespace TSVTools
                     {
                         typedValue = Convert.ChangeType(value, property.PropertyType);
                     }
-
                     property.SetValue(row, typedValue);
                 }
 
@@ -78,6 +83,11 @@ namespace TSVTools
             _rows.RemoveAt(index);
         }
 
+        public void ClearRows()
+        {
+            _rows.Clear();
+        }
+
         public void AppendFile(string filePath)
         {
             var tsvFile = new TsvFile<T>(filePath);
@@ -92,7 +102,9 @@ namespace TSVTools
 
         public void SaveToFile(string filePath)
         {
-            var lines = new List<string> { string.Join("\t", ColumnNames) };
+            using var writer = new StreamWriter(filePath);
+
+            writer.WriteLine(string.Join("\t", ColumnNames));
 
             foreach (var row in _rows)
             {
@@ -105,18 +117,18 @@ namespace TSVTools
                     rowValues.Add(value);
                 }
 
-                lines.Add(string.Join("\t", rowValues));
+                writer.WriteLine(string.Join("\t", rowValues));
             }
-
-            File.WriteAllLines(filePath, lines);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            foreach (var row in _rows)
-            {
-                yield return row;
-            }
+            return _rows.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
